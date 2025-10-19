@@ -121,9 +121,10 @@ def run_training_and_save():
     final_model = lgb.LGBMRegressor(**MODEL_PARAMS).fit(data_full[feature_cols], data_full["fwd_ret"])
     
     print("Saving final model and artifacts...")
-    # Save directly to the project folder
-    with open("latest_model.pkl", "wb") as f:
-        pickle.dump(final_model, f)
+    # --- MODIFIED LINE ---
+    # Save model in a version-agnostic text format instead of pickle
+    final_model.save_model("latest_model.txt")
+    
     with open("feature_cols.json", "w") as f:
         json.dump(feature_cols, f)
     print("Training complete!")
