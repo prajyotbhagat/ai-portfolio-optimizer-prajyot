@@ -16,11 +16,10 @@ st.markdown("Select the company sectors you want to invest in, and the AI will b
 
 @st.cache_resource
 def load_artifacts():
-    output_dir = "outputs"
     try:
-        with open(os.path.join(output_dir, "latest_model.pkl"), "rb") as f: model = pickle.load(f)
-        with open(os.path.join(output_dir, "feature_cols.json"), "r") as f: feature_cols = json.load(f)
-        with open(os.path.join(output_dir, "fundamental_data.json"), "r") as f: fund_data = json.load(f)
+        with open("latest_model.pkl", "rb") as f: model = pickle.load(f)
+        with open("feature_cols.json", "r") as f: feature_cols = json.load(f)
+        with open("fundamental_data.json", "r") as f: fund_data = json.load(f)
         return model, feature_cols, pd.DataFrame.from_dict(fund_data, orient='index')
     except FileNotFoundError:
         st.error("Model files missing. Please run `train_model.py` first.", icon="🚨")
