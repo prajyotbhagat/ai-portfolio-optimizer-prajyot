@@ -8,10 +8,6 @@ import json
 from tqdm import tqdm
 import urllib.request
 
-
-OUTPUT_DIR = "outputs"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-
 def get_major_index_tickers():
     """Fetches tickers from major global indices to create a large, high-quality universe."""
     print("Fetching constituent lists for US, European, and Asian indices...")
@@ -23,7 +19,6 @@ def get_major_index_tickers():
         with urllib.request.urlopen(req) as response:
             html_content = response.read()
         return pd.read_html(html_content)
-
     
     sp500_tickers = fetch_table('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')[0]['Symbol'].str.replace('.', '-', regex=False).tolist()
     nasdaq100_tickers = fetch_table('https://en.wikipedia.org/wiki/Nasdaq-100')[4]['Ticker'].tolist()
@@ -67,7 +62,9 @@ def get_and_save_fundamental_data(tickers):
             info = yf.Ticker(ticker).info
             fund_data[ticker] = {'longName': info.get('longName', ticker), 'sector': info.get('sector', 'N/A'), 'currency': info.get('currency', 'USD'), 'marketCap': info.get('marketCap'), 'trailingPE': info.get('trailingPE'), 'returnOnEquity': info.get('returnOnEquity')}
         except: continue
-    with open(os.path.join(OUTPUT_DIR, "fundamental_data.json"), "w") as f: json.dump(fund_data, f)
+    # Save directly to the project folder
+    with open("fundamental_data.json", "w") as f:
+        json.dump(fund_data, f)
 
 def make_features_with_macro(prices, vix_series, fund_df):
     ret = prices.pct_change()
@@ -106,7 +103,8 @@ def run_training_and_save():
     prices_all = download_prices(TICKERS + ["^VIX"], START)
     vix = prices_all["^VIX"]; prices = prices_all.drop(columns=["^VIX"], errors="ignore")
     get_and_save_fundamental_data(prices.columns.tolist())
-    with open(os.path.join(OUTPUT_DIR, "fundamental_data.json"), "r") as f:
+    # Load directly from the project folder
+    with open("fundamental_data.json", "r") as f:
         fund_df = pd.DataFrame.from_dict(json.load(f), orient='index')
 
     feat = make_features_with_macro(prices, vix, fund_df)
@@ -123,8 +121,11 @@ def run_training_and_save():
     final_model = lgb.LGBMRegressor(**MODEL_PARAMS).fit(data_full[feature_cols], data_full["fwd_ret"])
     
     print("Saving final model and artifacts...")
-    with open(os.path.join(OUTPUT_DIR, "latest_model.pkl"), "wb") as f: pickle.dump(final_model, f)
-    with open(os.path.join(OUTPUT_DIR, "feature_cols.json"), "w") as f: json.dump(feature_cols, f)
+    # Save directly to the project folder
+    with open("latest_model.pkl", "wb") as f:
+        pickle.dump(final_model, f)
+    with open("feature_cols.json", "w") as f:
+        json.dump(feature_cols, f)
     print("Training complete!")
 
 if __name__ == "__main__":
