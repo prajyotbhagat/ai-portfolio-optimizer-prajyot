@@ -156,5 +156,5 @@ This project is open-source and available under the [MIT License](LICENSE).
 
 **Prajyot Bhagat**  
 AI Researcher & Machine Learning Engineer  
-📧 Contact: [prajyotbhagat1989@.email@example.com]  
+📧 Contact: [prajyotbhagat1989@.com]  
 🌐 GitHub: [github.com/prajyotbhagat](https://github.com/prajyotbhagat)
