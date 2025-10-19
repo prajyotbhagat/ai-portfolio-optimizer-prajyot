@@ -1,0 +1,5 @@
+# Ignore the outputs directory
+outputs/
+
+# Python cache
+__pycache__/
