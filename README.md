@@ -26,7 +26,6 @@ It combines **fundamental**, **technical**, and **macroeconomic features** using
 ├── fundamental_data.json         # Cached fundamental data (market cap, ROE, etc.)
 ├── feature_cols.json             # Model feature metadata
 ├── latest_model.txt              # Trained LightGBM model (saved booster)
-├── outputs/                      # Optional directory for logs or visual results
 └── README.md                     # This file
 ```
 
