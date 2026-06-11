@@ -45,7 +45,7 @@ def make_features_live(prices, vix_series, fund_df):
         feat_frames.append(ff)
         
     df_macro = pd.DataFrame(index=prices.index)
-    df_macro["vix_level"] = vix_series.reindex(prices.index).fillna(method="ffill")
+    df_macro["vix_level"] = vix_series.reindex(prices.index).ffill()
     df_macro["vix_mom_21"] = df_macro["vix_level"].pct_change(21)
     for col in df_macro.columns:
         mat = pd.DataFrame(np.tile(df_macro[col].values.reshape(-1, 1), (1, prices.shape[1])), index=df_macro.index, columns=prices.columns)
@@ -60,7 +60,7 @@ def find_ai_optimal_portfolio(_model, feature_cols, fund_df, tickers):
         return None, None, None, None
 
     all_tickers = tickers + ["^VIX"]
-    prices = yf.download(all_tickers, period="5y", progress=False)['Close'].dropna(axis=1, thresh=500).fillna(method="ffill")
+    prices = yf.download(all_tickers, period="5y", progress=False)['Close'].dropna(axis=1, thresh=500).ffill()
     if prices.empty or "^VIX" not in prices.columns:
         return None, None, None, None
     

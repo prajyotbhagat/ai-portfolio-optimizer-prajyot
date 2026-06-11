@@ -52,7 +52,7 @@ MODEL_PARAMS = {"n_estimators": 500, "learning_rate": 0.05, "device": "gpu", "ra
 
 def download_prices(tickers, start):
     df = yf.download(tickers, start=start, progress=True, threads=True)["Close"]
-    df = df.dropna(axis=1, thresh=int(len(df) * 0.7)).fillna(method="ffill").dropna()
+    df = df.dropna(axis=1, thresh=int(len(df) * 0.7)).ffill().dropna()
     return df
 
 def get_and_save_fundamental_data(tickers):
@@ -80,7 +80,7 @@ def make_features_with_macro(prices, vix_series, fund_df):
         ff.columns = pd.MultiIndex.from_product([ff.columns, [col]]); feat_frames.append(ff)
 
     df_macro = pd.DataFrame(index=prices.index)
-    df_macro["vix_level"] = vix_series.reindex(prices.index).fillna(method="ffill")
+    df_macro["vix_level"] = vix_series.reindex(prices.index).ffill()
     df_macro["vix_mom_21"] = df_macro["vix_level"].pct_change(21).shift(1)
     for col in df_macro.columns:
         mat = pd.DataFrame(np.tile(df_macro[col].values.reshape(-1,1), (1, prices.shape[1])), index=df_macro.index, columns=prices.columns)
