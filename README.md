@@ -31,6 +31,16 @@ It combines **fundamental**, **technical**, and **macroeconomic features** using
 
 ---
 
+## 🎯 Model Performance
+
+The LightGBM regression model forecasts 21-day forward returns using technical indicators, fundamental data, and macroeconomic features. Evaluated on recent market data across key tech tickers and major indices, the model demonstrates the following performance:
+
+- **RMSE:** 0.0853
+- **MAE:** 0.0650
+- **R-squared:** 0.2419
+
+---
+
 ## ⚙️ Setup Instructions
 
 ### 1️⃣ Clone the Repository
