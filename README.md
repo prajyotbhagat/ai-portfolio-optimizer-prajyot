@@ -35,8 +35,8 @@ It combines **fundamental**, **technical**, and **macroeconomic features** using
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/yourusername/ai-sector-portfolio-optimizer.git
-cd ai-sector-portfolio-optimizer
+git clone https://github.com/yourusername/ai-portfolio-optimizer-prajyot.git
+cd ai-portfolio-optimizer-prajyot
 ```
 
 ### 2️⃣ Create & Activate Virtual Environment
